@@ -1,17 +1,19 @@
 <% layout("./layouts/boilerplate") %>
 <body>
-  <% const searchInput = typeof search !== 'undefined' ? search.toLowerCase() : ''; %>
+  <% 
+    let searchInput = typeof search !== 'undefined' ? search.toLowerCase().trim() : '';
+    searchInput = searchInput.replace(/\s+/g, ' '); // Replace multiple spaces with a single space
+  %>
   
-  <% if(search === '') { %>
+  <% if(searchInput === '') { %>
     <h3>All Listings</h3>
   <% } %>
 
   <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 <%= searchInput ? 'mt-4' : '' %>">
     <% 
        const filteredListings = allListings.filter(listing =>
-             listing.country.toLowerCase().includes(searchInput) ||
-             listing.location.toLowerCase().includes(searchInput) );
-      //  console.log(filteredListings) 
+             (listing.country.toLowerCase().includes(searchInput) ||
+             listing.location.toLowerCase().includes(searchInput)) );
     %>
 
     <% for(let listing of filteredListings) { %>
